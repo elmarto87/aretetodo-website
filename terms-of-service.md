@@ -1,4 +1,12 @@
-# Terms of Service
+<div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:8px;">
+<h1 style="margin:0;">Terms of Service</h1>
+<div style="display:flex;align-items:center;gap:4px;">
+<span style="display:inline-block;width:24px;height:24px;border-radius:50%;background-color:#4A90D9;"></span>
+<span style="display:inline-block;width:22px;height:22px;border-radius:50%;background-color:#B794F6;margin-left:-10px;"></span>
+<span style="display:inline-block;width:18px;height:18px;border-radius:50%;background-color:#7DD3FC;margin-left:-8px;"></span>
+<span style="font-size:15px;font-weight:700;color:#000;letter-spacing:2px;margin-left:8px;">ARETE</span>
+</div>
+</div>
 
 **Last Updated:** February 13, 2026
 
