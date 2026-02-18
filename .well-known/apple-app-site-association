@@ -3,14 +3,14 @@
     "apps": [],
     "details": [
       {
-        "appID": "TEAM_ID.com.arete.taskmanager.app",
+        "appID": "682NNK3GX9.com.arete.taskmanager.app",
         "paths": ["*"]
       }
     ]
   },
   "webcredentials": {
     "apps": [
-      "TEAM_ID.com.arete.taskmanager.app"
+      "682NNK3GX9.com.arete.taskmanager.app"
     ]
   }
 }
