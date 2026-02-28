@@ -1,0 +1,16 @@
+{
+  "applinks": {
+    "apps": [],
+    "details": [
+      {
+        "appID": "682NNK3GX9.com.arete.taskmanager.app",
+        "paths": ["*"]
+      }
+    ]
+  },
+  "webcredentials": {
+    "apps": [
+      "682NNK3GX9.com.arete.taskmanager.app"
+    ]
+  }
+}
