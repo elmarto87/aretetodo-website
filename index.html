@@ -780,9 +780,14 @@
     }
 
     .footer-logo {
-      font-family: var(--serif);
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      font-family: 'Manrope', var(--sans);
       font-size: 17px;
-      color: rgba(255,255,255,0.4);
+      font-weight: 800;
+      letter-spacing: -0.01em;
+      color: rgba(255,255,255,0.45);
       text-decoration: none;
     }
 
@@ -1352,7 +1357,14 @@
 
   <!-- FOOTER -->
   <footer>
-    <a href="/" class="footer-logo">ARETE</a>
+    <a href="/" class="footer-logo">
+      <svg width="28" height="23" viewBox="0 0 34 28" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+        <circle cx="11" cy="11" r="11" fill="#2B4AFF" opacity="0.6"/>
+        <circle cx="23" cy="11" r="11" fill="#B794F6" opacity="0.6"/>
+        <circle cx="17" cy="20" r="11" fill="#7DD3FC" opacity="0.6"/>
+      </svg>
+      ARETE
+    </a>
     <div class="footer-links">
       <a href="/privacy-policy">Privacy Policy</a>
       <a href="/terms-of-service">Terms of Service</a>
