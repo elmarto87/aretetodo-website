@@ -1,0 +1,1377 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>ARETE — The Focus App That Asks Why Before What</title>
+  <meta name="description" content="Stop managing lists. Start managing attention. ARETE limits you to 2–3 tasks and asks WHY, HOW, and what makes each one fulfilling — before you ever start." />
+  <meta name="apple-itunes-app" content="app-id=6759307580" />
+  <meta property="og:title" content="ARETE — The Focus App That Asks Why Before What" />
+  <meta property="og:description" content="2–3 intentional tasks. Three questions. One focused day." />
+  <meta property="og:url" content="https://aretetodo.com" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;0,9..40,600;0,9..40,700;1,9..40,400&display=swap" rel="stylesheet" />
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html { scroll-behavior: smooth; }
+
+    :root {
+      --blue: #2B4AFF;
+      --blue-light: #EEF1FF;
+      --blue-mid: #DBE1FF;
+      --purple: #B794F6;
+      --purple-light: #F5EEFF;
+      --cyan: #7DD3FC;
+      --cyan-light: #EFF9FF;
+      --dark: #0F172A;
+      --text: #1E293B;
+      --muted: #64748B;
+      --subtle: #94A3B8;
+      --border: #E2E8F0;
+      --bg: #F8FAFF;
+      --white: #FFFFFF;
+      --serif: 'DM Serif Display', Georgia, serif;
+      --sans: 'DM Sans', system-ui, -apple-system, sans-serif;
+      --radius: 20px;
+    }
+
+    body {
+      font-family: var(--sans);
+      background: var(--bg);
+      color: var(--text);
+      line-height: 1.6;
+      -webkit-font-smoothing: antialiased;
+      overflow-x: hidden;
+    }
+
+    /* ── NAV ── */
+    nav {
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      background: rgba(248, 250, 255, 0.88);
+      backdrop-filter: blur(16px);
+      -webkit-backdrop-filter: blur(16px);
+      border-bottom: 1px solid var(--border);
+      padding: 0 32px;
+      height: 64px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      max-width: 100%;
+    }
+
+    .nav-logo {
+      font-family: var(--serif);
+      font-size: 22px;
+      color: var(--dark);
+      text-decoration: none;
+      letter-spacing: 0.02em;
+    }
+
+    .nav-cta {
+      display: inline-flex;
+      align-items: center;
+      gap: 7px;
+      background: var(--blue);
+      color: white;
+      font-family: var(--sans);
+      font-size: 14px;
+      font-weight: 600;
+      padding: 10px 20px;
+      border-radius: 100px;
+      text-decoration: none;
+      transition: opacity 0.15s, transform 0.15s;
+    }
+    .nav-cta:hover { opacity: 0.88; transform: translateY(-1px); }
+
+    /* ── HERO ── */
+    .hero-section {
+      position: relative;
+      overflow: hidden;
+    }
+
+    .hero-blobs {
+      position: absolute;
+      inset: 0;
+      pointer-events: none;
+      z-index: 0;
+    }
+    .blob {
+      position: absolute;
+      border-radius: 50%;
+      filter: blur(70px);
+    }
+    .blob-blue  { width: 480px; height: 480px; background: #2B4AFF; opacity: 0.07; top: -160px; right: -80px; }
+    .blob-purple { width: 340px; height: 340px; background: #B794F6; opacity: 0.09; top: 100px; right: 100px; }
+    .blob-cyan  { width: 280px; height: 280px; background: #7DD3FC; opacity: 0.1; bottom: 0; left: -60px; }
+
+    .hero-inner {
+      position: relative;
+      z-index: 1;
+      max-width: 1120px;
+      margin: 0 auto;
+      padding: 80px 32px 72px;
+      display: grid;
+      grid-template-columns: 1fr 420px;
+      gap: 56px;
+      align-items: center;
+    }
+
+    .hero-eyebrow {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      font-size: 11px;
+      font-weight: 700;
+      letter-spacing: 1.8px;
+      text-transform: uppercase;
+      color: var(--blue);
+      margin-bottom: 22px;
+    }
+    .eyebrow-dot {
+      width: 5px; height: 5px; border-radius: 50%; background: var(--blue);
+    }
+
+    .hero h1 {
+      font-family: var(--serif);
+      font-size: clamp(38px, 5.5vw, 60px);
+      line-height: 1.08;
+      color: var(--dark);
+      margin-bottom: 24px;
+      letter-spacing: -0.01em;
+    }
+    .hero h1 em { color: var(--blue); font-style: italic; }
+
+    .hero-sub {
+      font-size: 18px;
+      color: var(--muted);
+      line-height: 1.7;
+      max-width: 460px;
+      margin-bottom: 40px;
+    }
+
+    .hero-actions {
+      display: flex;
+      align-items: center;
+      gap: 18px;
+      flex-wrap: wrap;
+    }
+
+    .btn-primary {
+      display: inline-flex;
+      align-items: center;
+      gap: 9px;
+      background: var(--blue);
+      color: white;
+      font-family: var(--sans);
+      font-size: 16px;
+      font-weight: 600;
+      padding: 15px 30px;
+      border-radius: 100px;
+      text-decoration: none;
+      box-shadow: 0 6px 24px rgba(43, 74, 255, 0.28);
+      transition: transform 0.15s, box-shadow 0.15s;
+    }
+    .btn-primary:hover { transform: translateY(-2px); box-shadow: 0 10px 32px rgba(43, 74, 255, 0.38); }
+
+    .hero-note {
+      font-size: 13px;
+      color: var(--subtle);
+    }
+
+    /* Phone mockup */
+    .hero-phone {
+      display: flex;
+      justify-content: center;
+    }
+
+    .phone-wrap {
+      animation: float 5s ease-in-out infinite;
+    }
+    @keyframes float {
+      0%, 100% { transform: translateY(0px); }
+      50% { transform: translateY(-14px); }
+    }
+
+    .phone-frame {
+      width: 260px;
+      height: 534px;
+      background: white;
+      border-radius: 44px;
+      border: 1.5px solid #D1D9E6;
+      box-shadow:
+        0 40px 100px rgba(15, 23, 42, 0.18),
+        0 0 0 1px rgba(255,255,255,0.8) inset,
+        0 2px 6px rgba(15,23,42,0.06);
+      overflow: hidden;
+      position: relative;
+    }
+
+    .phone-island {
+      position: absolute;
+      top: 14px;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 104px;
+      height: 30px;
+      background: #111;
+      border-radius: 15px;
+      z-index: 10;
+    }
+
+    .phone-screen {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      object-position: top center;
+      display: block;
+    }
+
+    /* ── PROOF STRIP ── */
+    .proof-strip {
+      background: white;
+      border-top: 1px solid var(--border);
+      border-bottom: 1px solid var(--border);
+      padding: 36px 32px;
+    }
+
+    .proof-inner {
+      max-width: 900px;
+      margin: 0 auto;
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 40px;
+    }
+
+    .proof-item {
+      display: flex;
+      flex-direction: column;
+      gap: 2px;
+    }
+
+    .proof-stat {
+      font-family: var(--serif);
+      font-size: 36px;
+      color: var(--blue);
+      line-height: 1;
+      margin-bottom: 6px;
+    }
+
+    .proof-label {
+      font-size: 14px;
+      color: var(--text);
+      line-height: 1.5;
+    }
+
+    .proof-source {
+      font-size: 11px;
+      color: var(--subtle);
+      margin-top: 6px;
+    }
+
+    /* ── SECTION BASE ── */
+    section { padding: 88px 32px; }
+
+    .section-inner { max-width: 1080px; margin: 0 auto; }
+
+    .section-eyebrow {
+      font-size: 11px;
+      font-weight: 700;
+      letter-spacing: 1.8px;
+      text-transform: uppercase;
+      color: var(--blue);
+      margin-bottom: 14px;
+    }
+
+    .section-title {
+      font-family: var(--serif);
+      font-size: clamp(30px, 4vw, 46px);
+      color: var(--dark);
+      line-height: 1.1;
+      margin-bottom: 16px;
+      letter-spacing: -0.01em;
+    }
+
+    .section-sub {
+      font-size: 17px;
+      color: var(--muted);
+      max-width: 520px;
+      line-height: 1.7;
+      margin-bottom: 56px;
+    }
+
+    /* ── HOW IT WORKS ── */
+    .steps-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 20px;
+    }
+
+    .step-card {
+      background: white;
+      border-radius: 24px;
+      border: 1px solid var(--border);
+      overflow: hidden;
+      transition: transform 0.2s ease, box-shadow 0.2s ease;
+      box-shadow: 0 2px 12px rgba(15, 23, 42, 0.04);
+    }
+    .step-card:hover {
+      transform: translateY(-6px);
+      box-shadow: 0 20px 48px rgba(15, 23, 42, 0.1);
+    }
+
+    .step-img-wrap {
+      width: 100%;
+      aspect-ratio: 390/844;
+      overflow: hidden;
+      border-bottom: 1px solid var(--border);
+      background: #F8FAFF;
+    }
+
+    .step-screenshot {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      object-position: top center;
+      display: block;
+    }
+
+    .step-content { padding: 24px 24px 28px; }
+
+    .step-pill {
+      display: inline-flex;
+      align-items: center;
+      font-size: 10px;
+      font-weight: 700;
+      letter-spacing: 1.2px;
+      text-transform: uppercase;
+      border-radius: 100px;
+      padding: 5px 12px;
+      margin-bottom: 12px;
+    }
+    .step-pill.why { background: var(--blue-light); color: var(--blue); }
+    .step-pill.how { background: var(--purple-light); color: #7C3AED; }
+    .step-pill.fulfillment { background: var(--cyan-light); color: #0891B2; }
+
+    .step-title {
+      font-family: var(--serif);
+      font-size: 20px;
+      color: var(--dark);
+      margin-bottom: 8px;
+    }
+
+    .step-desc {
+      font-size: 14px;
+      color: var(--muted);
+      line-height: 1.65;
+    }
+
+    /* ── TASK DETAIL SHOWCASE ── */
+    .detail-section {
+      background: white;
+      border-top: 1px solid var(--border);
+      border-bottom: 1px solid var(--border);
+    }
+
+    .detail-layout {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 64px;
+      align-items: center;
+    }
+
+    .detail-phone {
+      display: flex;
+      justify-content: center;
+    }
+
+    .detail-phone-frame {
+      width: 240px;
+      height: 490px;
+      background: white;
+      border-radius: 40px;
+      border: 1.5px solid var(--border);
+      box-shadow: 0 24px 64px rgba(15, 23, 42, 0.12);
+      overflow: hidden;
+      position: relative;
+    }
+
+    .detail-phone-island {
+      position: absolute;
+      top: 12px;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 96px;
+      height: 26px;
+      background: #111;
+      border-radius: 13px;
+      z-index: 10;
+    }
+
+    .detail-bullets {
+      display: flex;
+      flex-direction: column;
+      gap: 20px;
+    }
+
+    .detail-bullet {
+      display: flex;
+      gap: 16px;
+      align-items: flex-start;
+    }
+
+    .detail-bullet-icon {
+      width: 40px;
+      height: 40px;
+      border-radius: 12px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+      margin-top: 2px;
+    }
+
+    .detail-bullet-title {
+      font-size: 15px;
+      font-weight: 600;
+      color: var(--dark);
+      margin-bottom: 3px;
+    }
+
+    .detail-bullet-desc {
+      font-size: 14px;
+      color: var(--muted);
+      line-height: 1.55;
+    }
+
+    /* ── THE LOOP ── */
+    .loop-section {
+      background: var(--bg);
+    }
+
+    .loop-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      position: relative;
+    }
+
+    .loop-step {
+      background: white;
+      border: 1px solid var(--border);
+      border-right: none;
+      padding: 32px 28px;
+      position: relative;
+    }
+    .loop-step:first-child { border-radius: 20px 0 0 20px; }
+    .loop-step:last-child { border-radius: 0 20px 20px 0; border-right: 1px solid var(--border); }
+
+    .loop-num {
+      font-size: 10px;
+      font-weight: 700;
+      letter-spacing: 1.5px;
+      text-transform: uppercase;
+      color: var(--subtle);
+      margin-bottom: 10px;
+    }
+
+    .loop-icon {
+      width: 44px; height: 44px;
+      border-radius: 12px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin-bottom: 16px;
+    }
+
+    .loop-label {
+      font-family: var(--serif);
+      font-size: 20px;
+      color: var(--dark);
+      margin-bottom: 8px;
+    }
+
+    .loop-desc {
+      font-size: 13px;
+      color: var(--muted);
+      line-height: 1.6;
+    }
+
+    .loop-divider {
+      position: absolute;
+      right: -13px;
+      top: 50%;
+      transform: translateY(-50%);
+      width: 24px; height: 24px;
+      background: white;
+      border: 1px solid var(--border);
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      z-index: 2;
+    }
+
+    /* ── PRACTICE CIRCLES ── */
+    .practice-section {
+      background: linear-gradient(150deg, #F0F4FF 0%, #F8FAFF 50%, #F0FAFF 100%);
+      border-top: 1px solid var(--border);
+      border-bottom: 1px solid var(--border);
+    }
+
+    .practice-layout {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 64px;
+      align-items: center;
+    }
+
+    .circles-visual {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+
+    .practice-breakdown {
+      display: flex;
+      flex-direction: column;
+      gap: 14px;
+    }
+
+    .practice-card {
+      background: white;
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      padding: 18px 20px;
+    }
+
+    .practice-card-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 10px;
+    }
+
+    .practice-card-name {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .pcard-dot {
+      width: 10px; height: 10px; border-radius: 50%; flex-shrink: 0;
+    }
+
+    .pcard-label {
+      font-size: 14px;
+      font-weight: 600;
+      color: var(--dark);
+    }
+
+    .pcard-sub {
+      font-size: 12px;
+      color: var(--muted);
+    }
+
+    .pcard-pct {
+      font-family: var(--serif);
+      font-size: 20px;
+      color: var(--dark);
+    }
+
+    .pcard-bar {
+      height: 5px;
+      border-radius: 3px;
+      background: var(--border);
+      overflow: hidden;
+    }
+
+    .pcard-fill {
+      height: 100%;
+      border-radius: 3px;
+      transition: width 1s ease;
+    }
+
+    /* ── FEATURES ── */
+    .features-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 20px;
+    }
+
+    .feature-card {
+      background: white;
+      border: 1px solid var(--border);
+      border-radius: 24px;
+      padding: 36px;
+      box-shadow: 0 2px 12px rgba(15, 23, 42, 0.04);
+      transition: transform 0.2s, box-shadow 0.2s;
+    }
+    .feature-card:hover {
+      transform: translateY(-4px);
+      box-shadow: 0 14px 40px rgba(15, 23, 42, 0.09);
+    }
+
+    .feature-icon {
+      width: 48px; height: 48px;
+      border-radius: 14px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin-bottom: 20px;
+    }
+
+    .feature-title {
+      font-family: var(--serif);
+      font-size: 22px;
+      color: var(--dark);
+      margin-bottom: 10px;
+    }
+
+    .feature-desc {
+      font-size: 15px;
+      color: var(--muted);
+      line-height: 1.7;
+    }
+
+    /* ── RESEARCH ── */
+    .research-section {
+      background: white;
+      border-top: 1px solid var(--border);
+      border-bottom: 1px solid var(--border);
+    }
+
+    .research-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 16px;
+      margin-top: 48px;
+    }
+
+    .research-card {
+      border: 1px solid var(--border);
+      border-radius: 20px;
+      padding: 28px;
+      background: var(--bg);
+    }
+
+    .research-mark {
+      font-family: var(--serif);
+      font-size: 40px;
+      color: var(--blue-mid);
+      line-height: 1;
+      margin-bottom: 8px;
+    }
+
+    .research-quote {
+      font-family: var(--serif);
+      font-size: 17px;
+      color: var(--dark);
+      line-height: 1.55;
+      margin-bottom: 18px;
+    }
+
+    .research-source {
+      font-size: 12px;
+      color: var(--muted);
+      border-top: 1px solid var(--border);
+      padding-top: 14px;
+      line-height: 1.5;
+    }
+    .research-source strong { color: var(--text); }
+
+    /* ── PULL QUOTE ── */
+    .quote-section {
+      text-align: center;
+      padding: 88px 32px;
+    }
+
+    .pull-quote {
+      font-family: var(--serif);
+      font-size: clamp(26px, 4.5vw, 46px);
+      color: var(--dark);
+      max-width: 740px;
+      margin: 0 auto 16px;
+      line-height: 1.22;
+      letter-spacing: -0.01em;
+    }
+    .pull-quote em { color: var(--blue); font-style: italic; }
+
+    .quote-sub {
+      font-size: 15px;
+      color: var(--subtle);
+    }
+
+    /* ── CTA ── */
+    .cta-section {
+      background: var(--dark);
+      text-align: center;
+      padding: 96px 32px;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .cta-blob-1 {
+      position: absolute;
+      width: 600px; height: 600px;
+      background: var(--blue);
+      border-radius: 50%;
+      opacity: 0.07;
+      top: -250px; left: -150px;
+      pointer-events: none;
+    }
+    .cta-blob-2 {
+      position: absolute;
+      width: 500px; height: 500px;
+      background: var(--purple);
+      border-radius: 50%;
+      opacity: 0.07;
+      bottom: -200px; right: -150px;
+      pointer-events: none;
+    }
+
+    .cta-inner { position: relative; z-index: 1; }
+
+    .cta-eyebrow {
+      font-size: 11px;
+      font-weight: 700;
+      letter-spacing: 1.8px;
+      text-transform: uppercase;
+      color: rgba(255,255,255,0.4);
+      margin-bottom: 18px;
+    }
+
+    .cta-title {
+      font-family: var(--serif);
+      font-size: clamp(32px, 5vw, 56px);
+      color: white;
+      line-height: 1.08;
+      margin-bottom: 16px;
+      letter-spacing: -0.01em;
+    }
+
+    .cta-sub {
+      font-size: 17px;
+      color: rgba(255,255,255,0.55);
+      margin-bottom: 44px;
+    }
+
+    .btn-white {
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      background: white;
+      color: var(--dark);
+      font-family: var(--sans);
+      font-size: 16px;
+      font-weight: 700;
+      padding: 17px 36px;
+      border-radius: 100px;
+      text-decoration: none;
+      transition: transform 0.15s, box-shadow 0.15s;
+    }
+    .btn-white:hover { transform: translateY(-2px); box-shadow: 0 10px 36px rgba(0,0,0,0.35); }
+
+    .cta-note {
+      font-size: 13px;
+      color: rgba(255,255,255,0.3);
+      margin-top: 22px;
+    }
+
+    /* ── FOOTER ── */
+    footer {
+      background: var(--dark);
+      border-top: 1px solid rgba(255,255,255,0.07);
+      padding: 24px 32px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    .footer-logo {
+      font-family: var(--serif);
+      font-size: 17px;
+      color: rgba(255,255,255,0.4);
+      text-decoration: none;
+    }
+
+    .footer-links {
+      display: flex;
+      align-items: center;
+      gap: 24px;
+    }
+
+    .footer-links a {
+      font-size: 13px;
+      color: rgba(255,255,255,0.38);
+      text-decoration: none;
+      transition: color 0.15s;
+    }
+    .footer-links a:hover { color: rgba(255,255,255,0.75); }
+
+    .footer-copy {
+      font-size: 13px;
+      color: rgba(255,255,255,0.22);
+    }
+
+    /* ── SCROLL REVEAL ── */
+    .reveal {
+      opacity: 0;
+      transform: translateY(22px);
+      transition: opacity 0.55s ease, transform 0.55s ease;
+    }
+    .reveal.visible { opacity: 1; transform: none; }
+
+    /* ── RESPONSIVE ── */
+    @media (max-width: 960px) {
+      .hero-inner {
+        grid-template-columns: 1fr;
+        padding: 56px 24px 48px;
+        gap: 48px;
+        text-align: center;
+      }
+      .hero-sub { margin-left: auto; margin-right: auto; }
+      .hero-actions { justify-content: center; }
+      .hero-phone { order: -1; }
+      .steps-grid { grid-template-columns: 1fr; }
+      .detail-layout { grid-template-columns: 1fr; gap: 40px; }
+      .detail-phone { order: -1; }
+      .loop-grid { grid-template-columns: 1fr 1fr; }
+      .loop-step:first-child { border-radius: 20px 0 0 0; }
+      .loop-step:nth-child(2) { border-right: 1px solid var(--border); border-radius: 0 20px 0 0; }
+      .loop-step:nth-child(3) { border-top: none; border-radius: 0 0 0 20px; }
+      .loop-step:last-child { border-top: none; border-radius: 0 0 20px 0; }
+      .loop-divider { display: none; }
+      .practice-layout { grid-template-columns: 1fr; gap: 40px; text-align: center; }
+      .features-grid { grid-template-columns: 1fr; }
+      .proof-inner { grid-template-columns: 1fr; gap: 28px; }
+      .research-grid { grid-template-columns: 1fr; }
+      footer { flex-direction: column; gap: 14px; text-align: center; }
+    }
+
+    @media (max-width: 480px) {
+      nav { padding: 0 16px; }
+      section { padding: 64px 20px; }
+      .proof-strip { padding: 32px 20px; }
+      .hero-inner { padding: 48px 20px 40px; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- NAV -->
+  <nav>
+    <a href="/" class="nav-logo">ARETE</a>
+    <a href="https://testflight.apple.com/join/FQ4HcpbU" class="nav-cta" target="_blank" rel="noopener">
+      Get Early Access
+      <svg width="13" height="13" viewBox="0 0 13 13" fill="none" aria-hidden="true">
+        <path d="M2 6.5h9M7.5 2.5l4 4-4 4" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/>
+      </svg>
+    </a>
+  </nav>
+
+  <!-- HERO -->
+  <div class="hero-section">
+    <div class="hero-blobs" aria-hidden="true">
+      <div class="blob blob-blue"></div>
+      <div class="blob blob-purple"></div>
+      <div class="blob blob-cyan"></div>
+    </div>
+    <div class="hero-inner">
+      <div class="hero-content">
+        <div class="hero-eyebrow reveal">
+          <div class="eyebrow-dot"></div>
+          iOS App &mdash; Early Access Now Open
+        </div>
+        <h1 class="reveal" style="transition-delay:0.05s">
+          The focus app that asks <em>why</em> before <em>what.</em>
+        </h1>
+        <p class="hero-sub reveal" style="transition-delay:0.1s">
+          Stop managing lists. Start managing attention. ARETE limits you to 2&ndash;3 tasks that truly matter &mdash; and asks three questions that turn tasks into intentional action before you ever start.
+        </p>
+        <div class="hero-actions reveal" style="transition-delay:0.15s">
+          <a href="https://testflight.apple.com/join/FQ4HcpbU" class="btn-primary" target="_blank" rel="noopener">
+            <svg width="18" height="18" viewBox="0 0 18 18" fill="none" aria-hidden="true">
+              <path d="M9 2a7 7 0 100 14A7 7 0 009 2z" stroke="currentColor" stroke-width="1.6"/>
+              <path d="M6.5 9l2 2 3.5-3.5" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+            Join TestFlight &mdash; Free
+          </a>
+          <span class="hero-note">iOS only &middot; No account needed</span>
+        </div>
+      </div>
+
+      <div class="hero-phone reveal" style="transition-delay:0.2s">
+        <div class="phone-wrap">
+          <div class="phone-frame">
+            <div class="phone-island"></div>
+            <img src="/assets/screenshots/focus-main.png" alt="ARETE daily focus screen showing intentional task list" class="phone-screen" loading="eager" />
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- PROOF STRIP -->
+  <div class="proof-strip">
+    <div class="proof-inner">
+      <div class="proof-item reveal">
+        <div class="proof-stat">2&ndash;3&times;</div>
+        <div class="proof-label">more likely to follow through when you plan <em>how</em> before you start</div>
+        <div class="proof-source">Gollwitzer &amp; Sheeran &mdash; <em>Psychological Bulletin</em>, 2006</div>
+      </div>
+      <div class="proof-item reveal" style="transition-delay:0.1s">
+        <div class="proof-stat">23 min</div>
+        <div class="proof-label">average time to regain full focus after a single task interruption</div>
+        <div class="proof-source">Mark, Gonzalez &amp; Harris &mdash; UC Irvine / <em>CHI 2005</em></div>
+      </div>
+      <div class="proof-item reveal" style="transition-delay:0.2s">
+        <div class="proof-stat">41%</div>
+        <div class="proof-label">of to-do list tasks are never completed &mdash; purpose-first planning changes that</div>
+        <div class="proof-source">iDoneThis &amp; Productivity Research, 2014</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- HOW IT WORKS -->
+  <section>
+    <div class="section-inner">
+      <div class="reveal">
+        <div class="section-eyebrow">How it works</div>
+        <h2 class="section-title">Three questions.<br>Thirty seconds.<br>One focused day.</h2>
+        <p class="section-sub">Before you act, you think. ARETE walks you through the only three questions that matter for any meaningful task &mdash; eliminating the friction that causes avoidance before it ever starts.</p>
+      </div>
+      <div class="steps-grid">
+        <div class="step-card reveal">
+          <div class="step-img-wrap">
+            <img src="/assets/screenshots/step-why.png" alt="ARETE asking: Why does this task matter?" class="step-screenshot" loading="lazy" />
+          </div>
+          <div class="step-content">
+            <div class="step-pill why">Step 1 &mdash; WHY</div>
+            <h3 class="step-title">Why does this matter?</h3>
+            <p class="step-desc">The clearer your reason, the less likely you are to avoid the task when resistance hits. Purpose is procrastination&rsquo;s antidote.</p>
+          </div>
+        </div>
+        <div class="step-card reveal" style="transition-delay:0.1s">
+          <div class="step-img-wrap">
+            <img src="/assets/screenshots/step-how.png" alt="ARETE asking: How will you do it?" class="step-screenshot" loading="lazy" />
+          </div>
+          <div class="step-content">
+            <div class="step-pill how">Step 2 &mdash; HOW</div>
+            <h3 class="step-title">How will you do it?</h3>
+            <p class="step-desc">Defining your approach before you start removes the friction that causes procrastination. You&rsquo;ve already solved the hard part before you begin.</p>
+          </div>
+        </div>
+        <div class="step-card reveal" style="transition-delay:0.2s">
+          <div class="step-img-wrap">
+            <img src="/assets/screenshots/step-fulfillment.png" alt="ARETE asking: What makes this fulfilling?" class="step-screenshot" loading="lazy" />
+          </div>
+          <div class="step-content">
+            <div class="step-pill fulfillment">Step 3 &mdash; FULFILLMENT</div>
+            <h3 class="step-title">What makes it worth doing?</h3>
+            <p class="step-desc">Even hard tasks become easier when the meaning is clear. Connect your effort to what matters most to you &mdash; not just the outcome.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- TASK DETAIL SHOWCASE -->
+  <section class="detail-section">
+    <div class="section-inner">
+      <div class="detail-layout">
+        <div class="detail-phone reveal">
+          <div class="detail-phone-frame">
+            <div class="detail-phone-island"></div>
+            <img src="/assets/screenshots/task-detail.png" alt="Completed task with PURPOSE, HOW, FULFILLMENT, and REFLECTION sections" class="phone-screen" loading="lazy" />
+          </div>
+        </div>
+        <div class="reveal" style="transition-delay:0.12s">
+          <div class="section-eyebrow">Every task, fully seen</div>
+          <h2 class="section-title">Not just done. Understood.</h2>
+          <p class="section-sub" style="margin-bottom: 36px;">When a task is complete, ARETE asks you to reflect &mdash; not because it&rsquo;s required, but because the data becomes yours.</p>
+          <div class="detail-bullets">
+            <div class="detail-bullet">
+              <div class="detail-bullet-icon" style="background: var(--blue-light);">
+                <svg width="20" height="20" viewBox="0 0 20 20" fill="none" aria-hidden="true">
+                  <path d="M10 2a8 8 0 100 16A8 8 0 0010 2z" stroke="#2B4AFF" stroke-width="1.6"/>
+                  <path d="M7 10l2 2 4-4" stroke="#2B4AFF" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/>
+                </svg>
+              </div>
+              <div>
+                <div class="detail-bullet-title">PURPOSE &middot; HOW &middot; FULFILLMENT</div>
+                <div class="detail-bullet-desc">All three fields visible at a glance. Your thinking, preserved exactly as you wrote it.</div>
+              </div>
+            </div>
+            <div class="detail-bullet">
+              <div class="detail-bullet-icon" style="background: var(--cyan-light);">
+                <svg width="20" height="20" viewBox="0 0 20 20" fill="none" aria-hidden="true">
+                  <path d="M10 2l1.5 5h4.5l-3.5 2.5 1.5 5L10 12l-4 2.5 1.5-5L4 7h4.5L10 2z" stroke="#0891B2" stroke-width="1.6" stroke-linejoin="round"/>
+                </svg>
+              </div>
+              <div>
+                <div class="detail-bullet-title">Energy after completing</div>
+                <div class="detail-bullet-desc">Rate how energized or drained you felt. Over time, patterns emerge about what work truly sustains you.</div>
+              </div>
+            </div>
+            <div class="detail-bullet">
+              <div class="detail-bullet-icon" style="background: var(--purple-light);">
+                <svg width="20" height="20" viewBox="0 0 20 20" fill="none" aria-hidden="true">
+                  <path d="M3 3v14h14" stroke="#7C3AED" stroke-width="1.6" stroke-linecap="round"/>
+                  <path d="M6 13l3.5-4.5 3 2.5 4-5" stroke="#7C3AED" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/>
+                </svg>
+              </div>
+              <div>
+                <div class="detail-bullet-title">Approach effectiveness</div>
+                <div class="detail-bullet-desc">Was your method actually effective? Honest self-assessment builds the data your weekly insights are built from.</div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- THE LOOP -->
+  <section class="loop-section">
+    <div class="section-inner">
+      <div class="reveal" style="text-align:center; max-width:540px; margin:0 auto 48px;">
+        <div class="section-eyebrow">The complete loop</div>
+        <h2 class="section-title">Build from every task,<br>not just some.</h2>
+        <p class="section-sub" style="margin:0 auto;">Every task is a data point. ARETE closes the loop between intention and insight &mdash; so each task teaches you something about how you work best.</p>
+      </div>
+      <div class="loop-grid">
+        <div class="loop-step reveal">
+          <div class="loop-num">01</div>
+          <div class="loop-icon" style="background: var(--blue-light);">
+            <svg width="22" height="22" viewBox="0 0 22 22" fill="none" aria-hidden="true">
+              <path d="M8 5H6a2 2 0 00-2 2v11a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M8 5a2 2 0 002 2h2a2 2 0 002-2M8 5a2 2 0 012-2h2a2 2 0 012 2" stroke="#2B4AFF" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+          </div>
+          <div class="loop-label">Plan</div>
+          <p class="loop-desc">Choose 2&ndash;3 tasks. Answer WHY, HOW, and FULFILLMENT before you start. Commitment made.</p>
+          <div class="loop-divider" aria-hidden="true">
+            <svg width="10" height="10" viewBox="0 0 10 10" fill="none">
+              <path d="M1.5 5h7M5.5 1.5L9 5l-3.5 3.5" stroke="#CBD5E1" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+          </div>
+        </div>
+        <div class="loop-step reveal" style="transition-delay:0.1s">
+          <div class="loop-num">02</div>
+          <div class="loop-icon" style="background: var(--purple-light);">
+            <svg width="22" height="22" viewBox="0 0 22 22" fill="none" aria-hidden="true">
+              <circle cx="11" cy="11" r="8.5" stroke="#7C3AED" stroke-width="1.7"/>
+              <path d="M8 11l2 2 4-4" stroke="#7C3AED" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+          </div>
+          <div class="loop-label">Do</div>
+          <p class="loop-desc">Work with clarity. Your preparation from step one makes starting easier &mdash; every time.</p>
+          <div class="loop-divider" aria-hidden="true">
+            <svg width="10" height="10" viewBox="0 0 10 10" fill="none">
+              <path d="M1.5 5h7M5.5 1.5L9 5l-3.5 3.5" stroke="#CBD5E1" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+          </div>
+        </div>
+        <div class="loop-step reveal" style="transition-delay:0.2s">
+          <div class="loop-num">03</div>
+          <div class="loop-icon" style="background: var(--cyan-light);">
+            <svg width="22" height="22" viewBox="0 0 22 22" fill="none" aria-hidden="true">
+              <path d="M11 2l1.5 4.5h4.5l-3.5 2.5 1.5 4.5L11 11l-4 2.5 1.5-4.5L5 6.5h4.5L11 2z" stroke="#0891B2" stroke-width="1.7" stroke-linejoin="round"/>
+            </svg>
+          </div>
+          <div class="loop-label">Reflect</div>
+          <p class="loop-desc">Rate your energy and approach effectiveness. 30 seconds of honesty that compounds over time.</p>
+          <div class="loop-divider" aria-hidden="true">
+            <svg width="10" height="10" viewBox="0 0 10 10" fill="none">
+              <path d="M1.5 5h7M5.5 1.5L9 5l-3.5 3.5" stroke="#CBD5E1" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+          </div>
+        </div>
+        <div class="loop-step reveal" style="transition-delay:0.3s">
+          <div class="loop-num">04</div>
+          <div class="loop-icon" style="background: #F0FDF4;">
+            <svg width="22" height="22" viewBox="0 0 22 22" fill="none" aria-hidden="true">
+              <path d="M3 3v16h16" stroke="#15803D" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"/>
+              <path d="M6 14l4-5 3.5 3.5 4.5-7" stroke="#15803D" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+          </div>
+          <div class="loop-label">Grow</div>
+          <p class="loop-desc">AI reviews your week&rsquo;s reflections and surfaces patterns &mdash; which tasks energized you, which drained you, what to do differently.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- PRACTICE CIRCLES -->
+  <section class="practice-section">
+    <div class="section-inner">
+      <div class="practice-layout">
+        <div class="reveal">
+          <div class="section-eyebrow">3 Circles Practice</div>
+          <h2 class="section-title">Your growth,<br>made visible.</h2>
+          <p class="section-sub" style="margin-bottom:32px;">Three rings that fill as you practice showing up with intention. Not a streak &mdash; a practice. The goal isn&rsquo;t perfection. It&rsquo;s consistency.</p>
+          <div class="practice-breakdown">
+            <div class="practice-card">
+              <div class="practice-card-header">
+                <div class="practice-card-name">
+                  <div class="pcard-dot" style="background:#2B4AFF;"></div>
+                  <div>
+                    <div class="pcard-label">WHY &mdash; Purpose</div>
+                    <div class="pcard-sub">Grows as you articulate why your work matters</div>
+                  </div>
+                </div>
+                <div class="pcard-pct">30%</div>
+              </div>
+              <div class="pcard-bar"><div class="pcard-fill" style="width:30%;background:#2B4AFF;"></div></div>
+            </div>
+            <div class="practice-card">
+              <div class="practice-card-header">
+                <div class="practice-card-name">
+                  <div class="pcard-dot" style="background:#B794F6;"></div>
+                  <div>
+                    <div class="pcard-label">HOW &mdash; Approach</div>
+                    <div class="pcard-sub">Grows as you plan your method before starting</div>
+                  </div>
+                </div>
+                <div class="pcard-pct">55%</div>
+              </div>
+              <div class="pcard-bar"><div class="pcard-fill" style="width:55%;background:#B794F6;"></div></div>
+            </div>
+            <div class="practice-card">
+              <div class="practice-card-header">
+                <div class="practice-card-name">
+                  <div class="pcard-dot" style="background:#7DD3FC;"></div>
+                  <div>
+                    <div class="pcard-label">FULFILLMENT &mdash; Energy</div>
+                    <div class="pcard-sub">Grows as you reflect on what energizes you</div>
+                  </div>
+                </div>
+                <div class="pcard-pct">42%</div>
+              </div>
+              <div class="pcard-bar"><div class="pcard-fill" style="width:42%;background:#7DD3FC;"></div></div>
+            </div>
+          </div>
+        </div>
+
+        <div class="circles-visual reveal" style="transition-delay:0.15s">
+          <!-- 3 overlapping circles matching the actual app design -->
+          <svg viewBox="0 0 300 300" width="300" height="300" fill="none" xmlns="http://www.w3.org/2000/svg" aria-label="3 practice circles: WHY, HOW, FULFILLMENT">
+            <defs>
+              <!-- WHY shadow -->
+              <filter id="shadow-blue" x="-20%" y="-20%" width="140%" height="140%">
+                <feDropShadow dx="0" dy="4" stdDeviation="8" flood-color="#2B4AFF" flood-opacity="0.2"/>
+              </filter>
+              <!-- HOW shadow -->
+              <filter id="shadow-purple" x="-20%" y="-20%" width="140%" height="140%">
+                <feDropShadow dx="0" dy="4" stdDeviation="8" flood-color="#B794F6" flood-opacity="0.25"/>
+              </filter>
+              <!-- FULFILLMENT shadow -->
+              <filter id="shadow-cyan" x="-20%" y="-20%" width="140%" height="140%">
+                <feDropShadow dx="0" dy="4" stdDeviation="8" flood-color="#7DD3FC" flood-opacity="0.3"/>
+              </filter>
+            </defs>
+
+            <!-- WHY circle (blue, top-center-left) -->
+            <!-- center: 115, 110 radius: 80 circumference: 502.65 -->
+            <!-- background fill -->
+            <circle cx="115" cy="110" r="80" fill="#EEF1FF" opacity="0.9"/>
+            <!-- track ring -->
+            <circle cx="115" cy="110" r="72" fill="none" stroke="#D1DAFF" stroke-width="8"/>
+            <!-- progress arc (30% = 150.8) starting from top (-90deg) -->
+            <circle cx="115" cy="110" r="72"
+              fill="none"
+              stroke="#2B4AFF"
+              stroke-width="8"
+              stroke-dasharray="135.72 452.39"
+              stroke-dashoffset="113.1"
+              stroke-linecap="round"
+              transform="rotate(-90 115 110)"
+              filter="url(#shadow-blue)"
+            />
+            <text x="115" y="102" font-family="DM Sans, system-ui, sans-serif" font-size="10" font-weight="700" fill="#2B4AFF" text-anchor="middle" letter-spacing="1.2">WHY</text>
+            <text x="115" y="118" font-family="DM Serif Display, Georgia, serif" font-size="16" fill="#1E293B" text-anchor="middle">30%</text>
+
+            <!-- HOW circle (purple, top-center-right) -->
+            <!-- center: 185, 110 radius: 80 -->
+            <circle cx="185" cy="110" r="80" fill="#F5EEFF" opacity="0.9"/>
+            <circle cx="185" cy="110" r="72" fill="none" stroke="#E8DAFF" stroke-width="8"/>
+            <!-- progress arc (55% = 248.8) -->
+            <circle cx="185" cy="110" r="72"
+              fill="none"
+              stroke="#B794F6"
+              stroke-width="8"
+              stroke-dasharray="248.81 452.39"
+              stroke-dashoffset="113.1"
+              stroke-linecap="round"
+              transform="rotate(-90 185 110)"
+              filter="url(#shadow-purple)"
+            />
+            <text x="185" y="102" font-family="DM Sans, system-ui, sans-serif" font-size="10" font-weight="700" fill="#7C3AED" text-anchor="middle" letter-spacing="1.2">HOW</text>
+            <text x="185" y="118" font-family="DM Serif Display, Georgia, serif" font-size="16" fill="#1E293B" text-anchor="middle">55%</text>
+
+            <!-- FULFILLMENT circle (cyan, bottom-center) -->
+            <!-- center: 150, 178 radius: 80 -->
+            <circle cx="150" cy="178" r="80" fill="#EFF9FF" opacity="0.9"/>
+            <circle cx="150" cy="178" r="72" fill="none" stroke="#BAE6FD" stroke-width="8"/>
+            <!-- progress arc (42% = 190) -->
+            <circle cx="150" cy="178" r="72"
+              fill="none"
+              stroke="#7DD3FC"
+              stroke-width="8"
+              stroke-dasharray="190.0 452.39"
+              stroke-dashoffset="113.1"
+              stroke-linecap="round"
+              transform="rotate(-90 150 178)"
+              filter="url(#shadow-cyan)"
+            />
+            <text x="150" y="170" font-family="DM Sans, system-ui, sans-serif" font-size="9" font-weight="700" fill="#0891B2" text-anchor="middle" letter-spacing="0.8">FULFILLMENT</text>
+            <text x="150" y="186" font-family="DM Serif Display, Georgia, serif" font-size="16" fill="#1E293B" text-anchor="middle">42%</text>
+          </svg>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- FEATURES -->
+  <section>
+    <div class="section-inner">
+      <div class="reveal">
+        <div class="section-eyebrow">Features</div>
+        <h2 class="section-title">Everything you need.<br>Nothing you don&rsquo;t.</h2>
+        <p class="section-sub">ARETE is intentionally minimal. Every feature earns its place by making you more effective, not just more productive.</p>
+      </div>
+      <div class="features-grid">
+        <div class="feature-card reveal">
+          <div class="feature-icon" style="background: var(--blue-light);">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+              <path d="M21 15a2 2 0 01-2 2H7l-4 4V5a2 2 0 012-2h14a2 2 0 012 2v10z" stroke="#2B4AFF" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+          </div>
+          <h3 class="feature-title">Weekly AI Insights</h3>
+          <p class="feature-desc">At the end of each week, ARETE&rsquo;s AI reviews your reflections and surfaces real patterns &mdash; which tasks energized you, which drained you, and where your effort is paying off. Not generic tips. Your story, told back to you.</p>
+        </div>
+        <div class="feature-card reveal" style="transition-delay:0.1s">
+          <div class="feature-icon" style="background: var(--purple-light);">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+              <path d="M12 1a3 3 0 00-3 3v8a3 3 0 006 0V4a3 3 0 00-3-3z" stroke="#7C3AED" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>
+              <path d="M19 10v2a7 7 0 01-14 0v-2M12 19v4M8 23h8" stroke="#7C3AED" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+          </div>
+          <h3 class="feature-title">Voice Input</h3>
+          <p class="feature-desc">Record your approach or purpose hands-free using Whisper AI. Capture your thinking the moment it happens &mdash; without breaking your flow or opening a keyboard.</p>
+        </div>
+        <div class="feature-card reveal" style="transition-delay:0.2s">
+          <div class="feature-icon" style="background: var(--cyan-light);">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+              <rect x="3" y="3" width="8" height="8" rx="1.5" stroke="#0891B2" stroke-width="1.8"/>
+              <rect x="13" y="3" width="8" height="8" rx="1.5" stroke="#0891B2" stroke-width="1.8"/>
+              <rect x="3" y="13" width="8" height="8" rx="1.5" stroke="#0891B2" stroke-width="1.8"/>
+              <rect x="13" y="13" width="8" height="8" rx="1.5" stroke="#0891B2" stroke-width="1.8"/>
+            </svg>
+          </div>
+          <h3 class="feature-title">Work &amp; Personal</h3>
+          <p class="feature-desc">Two focused lists, each with their own 2&ndash;3 task intention. Separate your work and personal tasks without the cognitive cost of mixing contexts in the same view.</p>
+        </div>
+        <div class="feature-card reveal" style="transition-delay:0.3s">
+          <div class="feature-icon" style="background: #F0FDF4;">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+              <circle cx="12" cy="12" r="9" stroke="#15803D" stroke-width="1.8"/>
+              <circle cx="12" cy="12" r="3" fill="#15803D"/>
+              <path d="M12 3v3M12 18v3M3 12h3M18 12h3" stroke="#15803D" stroke-width="1.8" stroke-linecap="round"/>
+            </svg>
+          </div>
+          <h3 class="feature-title">Focus Streak</h3>
+          <p class="feature-desc">A streak that rewards showing up with intention, not volume. Complete your chosen tasks for five consecutive days and your streak grows &mdash; building a practice, not a habit of adding more.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- RESEARCH -->
+  <section class="research-section">
+    <div class="section-inner">
+      <div class="reveal">
+        <div class="section-eyebrow">The science behind ARETE</div>
+        <h2 class="section-title">Built on what researchers<br>know about follow-through.</h2>
+        <p class="section-sub">ARETE&rsquo;s three-question structure isn&rsquo;t a hunch. It&rsquo;s grounded in decades of peer-reviewed research on motivation, procrastination, and habit formation.</p>
+      </div>
+      <div class="research-grid">
+        <div class="research-card reveal">
+          <div class="research-mark">&ldquo;</div>
+          <p class="research-quote">People who form implementation intentions &mdash; specifying when, where, and how they will act &mdash; are 2&ndash;3 times more likely to follow through on their goals than those who only state intent.</p>
+          <div class="research-source">
+            <strong>Gollwitzer &amp; Sheeran, 2006</strong> &mdash; Meta-analysis of 94 studies on implementation intentions. <em>Psychological Bulletin</em>, 132(4), 536&ndash;575.
+          </div>
+        </div>
+        <div class="research-card reveal" style="transition-delay:0.1s">
+          <div class="research-mark">&ldquo;</div>
+          <p class="research-quote">When people understand the personal significance of their work, they show greater intrinsic motivation, persistence, and wellbeing &mdash; regardless of task difficulty or external reward.</p>
+          <div class="research-source">
+            <strong>Deci &amp; Ryan, 2000</strong> &mdash; Self-determination theory and the facilitation of intrinsic motivation, social development, and wellbeing. <em>Psychological Inquiry</em>, 11(4), 227&ndash;268.
+          </div>
+        </div>
+        <div class="research-card reveal" style="transition-delay:0.2s">
+          <div class="research-mark">&ldquo;</div>
+          <p class="research-quote">After a task interruption, it takes an average of 23 minutes and 15 seconds to fully return to the original task. Limiting task count directly reduces this cognitive switching cost.</p>
+          <div class="research-source">
+            <strong>Mark, Gonzalez &amp; Harris, 2005</strong> &mdash; No task left behind: Examining the nature of fragmented work. <em>Proceedings of CHI 2005</em>, ACM Press.
+          </div>
+        </div>
+        <div class="research-card reveal" style="transition-delay:0.3s">
+          <div class="research-mark">&ldquo;</div>
+          <p class="research-quote">Progress on meaningful goals &mdash; even small wins &mdash; is the single most important factor in daily inner work life: motivation, emotions, and creative output.</p>
+          <div class="research-source">
+            <strong>Amabile &amp; Kramer, 2011</strong> &mdash; The power of small wins. <em>Harvard Business Review</em>. Based on 12,000 diary entries across 238 professionals in 7 companies.
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- PULL QUOTE -->
+  <section class="quote-section">
+    <p class="pull-quote reveal">&ldquo;Most apps let you keep adding.<br>ARETE makes you <em>choose.</em>&rdquo;</p>
+    <p class="quote-sub reveal" style="transition-delay:0.1s">The constraint is the feature.</p>
+  </section>
+
+  <!-- CTA -->
+  <section class="cta-section">
+    <div class="cta-blob-1" aria-hidden="true"></div>
+    <div class="cta-blob-2" aria-hidden="true"></div>
+    <div class="cta-inner reveal">
+      <div class="cta-eyebrow">Join Early Access</div>
+      <h2 class="cta-title">Try ARETE free<br>on TestFlight.</h2>
+      <p class="cta-sub">Join a growing group of people choosing intention over noise.</p>
+      <a href="https://testflight.apple.com/join/FQ4HcpbU" class="btn-white" target="_blank" rel="noopener">
+        <svg width="20" height="20" viewBox="0 0 20 20" fill="none" aria-hidden="true">
+          <path d="M10 2a8 8 0 100 16A8 8 0 0010 2z" stroke="currentColor" stroke-width="1.7"/>
+          <path d="M7 10l2 2 4-4" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"/>
+        </svg>
+        Get Early Access on TestFlight
+      </a>
+      <p class="cta-note">iOS only &middot; Free during early access &middot; No account required to join</p>
+    </div>
+  </section>
+
+  <!-- FOOTER -->
+  <footer>
+    <a href="/" class="footer-logo">ARETE</a>
+    <div class="footer-links">
+      <a href="/privacy-policy">Privacy Policy</a>
+      <a href="/terms-of-service">Terms of Service</a>
+      <span class="footer-copy">&copy; 2026 ARETE</span>
+    </div>
+  </footer>
+
+  <script>
+    // Scroll reveal via IntersectionObserver
+    const reveals = document.querySelectorAll('.reveal');
+    const obs = new IntersectionObserver(
+      entries => entries.forEach(e => { if (e.isIntersecting) { e.target.classList.add('visible'); obs.unobserve(e.target); } }),
+      { threshold: 0.08, rootMargin: '0px 0px -32px 0px' }
+    );
+    reveals.forEach(el => obs.observe(el));
+  </script>
+</body>
+</html>
